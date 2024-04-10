@@ -1,0 +1,5 @@
+*Spring version 3 compatibility with JDK
+https://jojoldu.tistory.com/698
+
+*Mac upgrade java
+https://stackoverflow.com/questions/69875335/macos-how-to-install-java-17
