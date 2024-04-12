@@ -1,0 +1,73 @@
+1. multitenant project which can be connected to DB.
+
+//since wirtten "tenant specific database"
+create two db
+
+brew install postgresql@15
+brew list
+brew uninstall postgresql@15
+
+
+
+DB 1 Device_Manipal_01_DB
+DB 2 Device_Manipal_02_DB
+
+
+//only jakarta jpa annotation avaialble not javax,  from spring 3
+https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0.0-M1-Release-Notes
+
+
+/// 404 with controller as response body was not defined, hence rest controller
+@Controller
+@RequestMapping("/duecreate/v1.0")
+public class DueCreateController {
+
+}
+Response:
+
+{
+"timestamp": 1529692263422,
+"status": 404,
+"error": "Not Found",
+"message": "No message available",
+"path": "/duecreate/v1.0/status"
+}
+after changing it to below code I received proper response
+
+@RestController
+@RequestMapping("/duecreate/v1.0")
+public class DueCreateController {
+
+}
+Response:
+
+{
+"batchId": "DUE1529673844630",
+"batchType": null,
+"executionDate": null,
+"status": "OPEN"
+}
+
+
+
+
+ref:
+https://github.com/sumanentc/multitenant/tree/master
+https://spring.io/blog/2022/07/31/how-to-integrate-hibernates-multitenant-feature-with-spring-data-jpa-in-a-spring-boot-application
+https://stackoverflow.com/questions/64945839/how-to-implement-a-multi-tenant-spring-boot-application-where-each-user-has-it
+https://github.com/spring-projects/spring-data-examples/tree/main/jpa/multitenant/db
+https://github.com/Cepr0/sb-multitenant-db-demo/tree/tenant-in-db
+
+https://github.com/nithinurs46/SpringBootMultiTenancy/tree/main
+
+
+//hibernae 6 omited
+
+https://discourse.hibernate.org/t/environment-multi-tenant-and-createsqlquery-not-found-hibernate-6-1-6final/7266/2
+
+set package scan  correctly for entity manager
+https://stackoverflow.com/questions/74616311/spring-boot-not-a-managed-type
+
+cyclic dependency
+https://stackoverflow.com/questions/41608705/the-dependencies-of-some-of-the-beans-in-the-application-context-form-a-cycle
+

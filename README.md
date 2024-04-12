@@ -4,11 +4,13 @@ DevicesEvent Multitenant Application  designed to consume events triggered by a 
 
 Java Backend- Java+ AWS
 
-Create multi-tenant Spring Boot application designed to consume events triggered by a Kafka topic when a file is added to an S3 bucket.
+Create multi-tenant Spring Boot application designed to consume events triggered 
+by a Kafka topic when a file is added to an S3 bucket.
 The application should retrieve the file from tenant specific S3 bucket
 Execute necessary processing on the file content, and persist the data into tenant specific database.
 Expose REST APIs to facilitate the retrieval of ingested data where input of API should be tenant_id and device_id
-Ensure that the S3 file is deleted after successful processing, and implement robust handling for failure scenarios, such as errors during S3 file processing or issues during database ingestion.
+Ensure that the S3 file is deleted after successful processing, and implement robust handling for failure scenarios,
+such as errors during S3 file processing or issues during database ingestion.
 Publish alerts in the event of any failures.(Optional)
 
 Sample file for reference -
