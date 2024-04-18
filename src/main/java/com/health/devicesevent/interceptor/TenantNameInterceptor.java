@@ -1,17 +1,28 @@
-package com.health.devicesevent.configuration.interceptor;
+package com.health.devicesevent.interceptor;
 
 import com.health.devicesevent.configuration.TenantContext;
+import com.health.devicesevent.dao.DataSourceConfigRepository;
+import com.health.devicesevent.entity.Tenant;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 
 public class TenantNameInterceptor implements HandlerInterceptor {
     private static Logger log = LoggerFactory.getLogger(TenantNameInterceptor.class);
+
+//    @Autowired
+//    private ApplicationContext context;
+
+    @Autowired
+    DataSourceConfigRepository configRepo;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -21,8 +32,12 @@ public class TenantNameInterceptor implements HandlerInterceptor {
         String tenantId = request.getParameter("tenantId");
         log.info("Request URI: {}", requestURI);
         log.info("Tenant Id: {}", tenantId);
+//        DataSourceConfigRepository configRepo = context.getBean(DataSourceConfigRepository.class);
+        Optional<Tenant> tenant= configRepo.findById(tenantId);
 
-        if (tenantId == null) {
+        if (tenant.isEmpty()) {
+
+
             response.getWriter().write("Tenant Id is not present in the request header");
             response.setStatus(400);
             return false;

@@ -29,6 +29,37 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	implementation(platform("software.amazon.awssdk:bom:2.21.1"))
+	implementation("software.amazon.awssdk:s3")
+// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-sqs
+	implementation 'com.amazonaws:aws-java-sdk-sqs:1.12.701'
+// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-aws-messaging
+
+	// https://mvnrepository.com/artifact/io.awspring.cloud/spring-cloud-aws-dependencies
+//	implementation 'io.awspring.cloud:spring-cloud-aws-dependencies:3.2.0'
+
+//	implementation 'io.awspring.cloud:spring-cloud-aws-dependencies:2.4.2'
+//	implementation 'io.awspring.cloud:spring-cloud-starter-aws-messaging:2.4.2'
+// https://mvnrepository.com/artifact/io.awspring.cloud/spring-cloud-aws-dependencies
+	implementation 'io.awspring.cloud:spring-cloud-aws-dependencies:3.2.0-M1'
+// https://mvnrepository.com/artifact/io.awspring.cloud/spring-cloud-aws-starter-sqs
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-sqs:3.2.0-M1'
+// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+
+//	implementation 'org.springframework:spring-messaging:5.3.24'
+//	implementation 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.6.RELEASE'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// https://mvnrepository.com/artifact/org.json/json
+	implementation 'org.json:json:20240303'
+
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation 'commons-io:commons-io:2.16.1'
 }
 
 tasks.named('test') {

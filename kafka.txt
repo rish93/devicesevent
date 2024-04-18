@@ -1,0 +1,28 @@
+//listner on terminal command
+kafka-console-consumer --bootstrap-server localhost:9092 --topic foobar --from-beginning
+
+//producer on terminal command
+kafka-console-producer --broker-list localhost:9092 --topic foobar
+
+//temrinal list all topics
+kafka-topics \
+  --bootstrap-server localhost:9092 \
+  --list
+
+kafka-topics --bootstrap-server localhost:9092 --delete --topic d
+
+
+/setting kafka on mac
+https://medium.com/@taapasagrawal/installing-and-running-apache-kafka-on-macos-with-m1-processor-5238dda81d51
+
+//read from aws kafka
+https://github.com/aws-samples/amazon-msk-java-app-cdk/blob/main/consumer/src/main/java/amazon/aws/samples/kafka/KafkaConsumer.java
+
+//read form local kafka
+https://medium.com/@prekshaan95/java-spring-boot-kafka-connection-setup-1f494df4eff4
+
+ref
+https://www.javaguides.net/2022/06/spring-boot-apache-kafka-tutorial.html
+
+#Kafka topic configuration for offsetreset
+https://quix.io/blog/kafka-auto-offset-reset-use-cases-and-pitfalls#:~:text=The%20auto.,and%20discover%20its%20related%20challenges.

@@ -1,0 +1,1 @@
+https://github.com/arthurtira/spring-boot-sqs-example/blob/master/src/main/java/com/arthurtira/sbs/config/AwsSQSConfiguration.java

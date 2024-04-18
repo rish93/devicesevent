@@ -15,8 +15,8 @@ Publish alerts in the event of any failures.(Optional)
 
 Sample file for reference -
 
-Tenant_id  Device_id  Model             Manufacturer      Device_Type      Approval_Date
-Manipal_01  201       GE-MRI-1000       General Electric  MRI Scanner       2022-01-20
-Manipal_01  202       GE-Xray-5000      General Electric  X-ray Machine     2022-03-15
-Manipal_01  203       GE-Ultrasound-300 Siemens           Ultrasound System 2022-02-15
-Manipal_01  204       GE-CT-Scanner-700 Phillips          CT Scanner        2022-02-10
+Tenant_id    Device_id  Model              Manufacturer       Device_Type        Approval_Date
+Manipal_01   201        GE-MRI-1000        General Electric   MRI Scanner        2022-01-20
+Manipal_01   202        GE-Xray-5000       General Electric   X-ray Machine      2022-03-15
+Manipal_01   203        GE-Ultrasound-300  Siemens            Ultrasound System  2022-02-15
+Manipal_01   204        GE-CT-Scanner-700  Phillips           CT Scanner         2022-02-10

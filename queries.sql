@@ -93,3 +93,8 @@ ALTER TABLE IF EXISTS DeviceDetail.Device
 
 COMMENT ON TABLE DeviceDetail.Device
     IS 'Device table holding details from file consumed from S3 vendor specific';
+
+************ Optionaly insert into device table for each tenant
+INSERT INTO devicedetail.device(
+	tenant_id, device_id, model, manufacturer, device_type, approval_date)
+	VALUES (?, ?, ?, ?, ?, ?);
