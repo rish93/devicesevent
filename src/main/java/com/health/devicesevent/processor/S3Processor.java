@@ -1,35 +1,27 @@
 package com.health.devicesevent.processor;
 
 import com.amazonaws.services.s3.AmazonS3;
+
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.health.devicesevent.configuration.TenantDataSource;
-import com.health.devicesevent.dao.DataSourceConfigRepository;
-import com.health.devicesevent.entity.Tenant;
+
+import software.amazon.awssdk.services.s3.model.S3Exception;
 import com.health.devicesevent.listener.KafkaConsumer;
 import com.health.devicesevent.util.AppUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import software.amazon.awssdk.core.ResponseBytes;
-import software.amazon.awssdk.core.ResponseInputStream;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.*;
 
 import javax.sql.DataSource;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+
 
 @Component("s3processor")
 public class S3Processor {
@@ -40,19 +32,28 @@ public class S3Processor {
 
     public void getObjectBytes(AmazonS3 s3, String bucketName, String keyName, String path) throws SQLException {
         DataSource dataSource = null;
+        Integer isExecuted = -1;
+        S3Object s3Object = null;
      try {
-        S3Object s3Object=    s3.getObject(bucketName,keyName);
+        s3Object=    s3.getObject(bucketName,keyName);
         S3ObjectInputStream responseInputStream  =   s3Object.getObjectContent();
 
-             String sqlInsert= tableToSqlQuery( new String(responseInputStream.readAllBytes(), StandardCharsets.UTF_8));
-             LOGGER.info("INSERT QUERY : "+sqlInsert);
-             TenantDataSource tenantDataSource = context.getBean(TenantDataSource.class);
-             dataSource= tenantDataSource.getDataSource(bucketName);
-             dataSource.getConnection().createStatement().execute(sqlInsert);
+         String sqlInsert= tableToSqlQuery( new String(responseInputStream.readAllBytes(), StandardCharsets.UTF_8));
+         LOGGER.info("INSERT QUERY : "+sqlInsert);
+         TenantDataSource tenantDataSource = context.getBean(TenantDataSource.class);
+         dataSource= tenantDataSource.getDataSourceWithBucketName(bucketName);
+         isExecuted= dataSource.getConnection().createStatement().executeUpdate(sqlInsert);
         } catch (S3Exception | IOException e ) {
             System.err.println(e.getMessage());
             System.exit(1);
-        }
+        }finally {
+         if(isExecuted>0){
+             LOGGER.info("S3 file Successfully process removing s3 object : "+keyName);
+             s3.deleteObject(bucketName,keyName);
+             LOGGER.info("DELETED : "+keyName);
+         }
+
+     }
 
     }
 

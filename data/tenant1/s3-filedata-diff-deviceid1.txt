@@ -1,0 +1,5 @@
+Tenant_id    Device_id  Model              Manufacturer       Device_Type        Approval_Date
+Manipal_01   210        GE-HG-1323        MG Electric         MRI Scanner        2024-01-20
+Manipal_01   211        GE-VC-93          MG Electric         X-ray Machine      2024-03-15
+Manipal_01   212        GE-12-US-300      GE                  Ultrasound System  2024-02-15
+Manipal_01   213        GE-CT-Scanner-10  GE                  CT Scanner         2024-02-10

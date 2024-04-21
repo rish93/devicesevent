@@ -11,10 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -44,6 +41,25 @@ public class TenantDataSource implements Serializable {
         DataSource dataSource = createDataSource(dbId);
         if (dataSource != null) {
             dataSources.put(dbId, dataSource);
+        }
+        return dataSource;
+    }
+
+    public DataSource getDataSourceWithBucketName(String bucketName) {
+        String s3bucketName= bucketName.replaceAll("[-+.^:,]","");
+        for(Map.Entry<String,DataSource> stringDataSourceEntry: dataSources.entrySet()){
+
+            if(stringDataSourceEntry.getKey()
+                    .replaceAll("[-+._^:,]","")
+                    .equalsIgnoreCase(s3bucketName)){
+
+                return stringDataSourceEntry.getValue();
+            }
+
+        }
+        DataSource dataSource = createDataSource(bucketName);
+        if (dataSource != null) {
+            dataSources.put(bucketName, dataSource);
         }
         return dataSource;
     }

@@ -11,10 +11,10 @@ import java.util.Date;
 @Table(name = "device",  schema = "devicedetail")
 @Data
 public class Device {
-    @Id
+
     @Column(name = "tenant_id")
     private String tenantId;
-
+    @Id
     @Column(name = "device_id")
     private Integer deviceId;
 

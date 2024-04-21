@@ -23,19 +23,4 @@ public class ApplicationConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor( tenantNameInterceptor());
     }
-
-//    @Bean
-//    S3Processor s3Processor() {
-//        return new S3Processor();
-//    }
-//
-//    @Bean
-//    KafkaConsumer kafkaConsumer() {
-//        return new KafkaConsumer();
-//    }
-
-//    @Override
-//    public void addInterceptors(final InterceptorRegistry registry) {
-//        registry.addInterceptor(new TenantNameInterceptor());
-//    }
 }

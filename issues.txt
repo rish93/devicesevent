@@ -49,3 +49,9 @@ https://stackoverflow.com/questions/41608705/the-dependencies-of-some-of-the-bea
 
 *Unable to autowire in interceptor
 https://stackoverflow.com/questions/18218386/cannot-autowire-service-in-handlerinterceptoradapter
+https://stackoverflow.com/questions/68686161/statement-execute-returning-false-even-though-changes-are-made
+
+
+org.apache.kafka.common.errors.DisconnectException: null
+Caused by: software.amazon.awssdk.core.exception.SdkClientException: Unable to execute HTTP request: Acquire operation took longer than the configured maximum time. This indicates that a request cannot get a connection from the pool within the specified maximum time. This can be due to high request rate.
+

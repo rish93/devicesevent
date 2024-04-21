@@ -15,16 +15,10 @@ import java.util.Map;
 public class DataSourceBasedMultiTenantConnectionProviderImpl
         extends AbstractDataSourceBasedMultiTenantConnectionProviderImpl {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -8166134507960042429L;
     private static final String DEFAULT_TENANT_ID = "public";
     @Autowired
     private DataSource defaultDS;
-
-//    @Autowired
-//    TenantDataSource tenantDataSource;
 
     @Autowired
     private ApplicationContext context;
