@@ -20,3 +20,7 @@ Manipal_01   201        GE-MRI-1000        General Electric   MRI Scanner       
 Manipal_01   202        GE-Xray-5000       General Electric   X-ray Machine      2022-03-15
 Manipal_01   203        GE-Ultrasound-300  Siemens            Ultrasound System  2022-02-15
 Manipal_01   204        GE-CT-Scanner-700  Phillips           CT Scanner         2022-02-10
+
+
+
+![alt text](https://github.com/rish93/devicesevent/blob/master/architecture.jpg?raw=true)
