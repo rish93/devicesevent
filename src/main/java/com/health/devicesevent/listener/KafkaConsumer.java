@@ -56,12 +56,12 @@ public class KafkaConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
     @RetryableTopic(attempts = "4", backoff = @Backoff(delay = 3000))
-    //exclude retry for ,exclude = {NullPointerException.class}
+    // ,exclude = {NullPointerException.class}
     @KafkaListener(topics = AppConstants.TOPIC_NAME,
             groupId = AppConstants.GROUP_ID)
     public void consume(String message) throws SQLException {
         LOGGER.info(String.format("Message received -> %s", message));
-//        try {
+
          JSONObject jsonObject = new JSONObject(message);
          JSONObject s3ObjDetail= jsonObject.getJSONArray("Records").getJSONObject(0);
          LOGGER.info(String.format("Object created-> %s", s3ObjDetail));
@@ -72,26 +72,13 @@ public class KafkaConsumer {
          String region =  s3ObjDetail.getString("awsRegion");
          String path = "";
 
-//        AmazonS3 s3client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.AP_EAST_1).build();
-//        String bucketExists=String.valueOf(s3client.doesBucketExistV2("newBucketName"));
-//
-
         BasicAWSCredentials creds = new BasicAWSCredentials(accessKey, secretKey);
         AmazonS3 s3Client = AmazonS3ClientBuilder
                 .standard()
                 .withRegion(String.valueOf(Region.of(region)))
                 .withCredentials(new AWSStaticCredentialsProvider(creds))
                 .build();
-//        S3Client s3 = S3Client.builder().
-//
-//                .region(Region.of(region))
-//                .build();
-
             s3Processor.getObjectBytes(s3Client, bucketName, keyName, path);
-//        } catch (SQLException e) {// | JSONException e
-//            e.printStackTrace();
-//        }
-
     }
 
     @DltHandler

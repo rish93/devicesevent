@@ -23,4 +23,4 @@ Manipal_01   204        GE-CT-Scanner-700  Phillips           CT Scanner        
 
 
 
-![alt text](https://github.com/rish93/devicesevent/blob/master/architecture.jpg?raw=true)
+![alt text](https://github.com/rish93/devicesevent/blob/master/architecture.png?raw=true)
