@@ -1,5 +1,8 @@
 package com.health.devicesevent.processor;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.health.devicesevent.configuration.TenantDataSource;
 import com.health.devicesevent.dao.DataSourceConfigRepository;
 import com.health.devicesevent.entity.Tenant;
@@ -35,54 +38,18 @@ public class S3Processor {
     @Autowired
     private ApplicationContext context;
 
-    public void getObjectBytes(S3Client s3, String bucketName, String keyName, String path) throws SQLException {
+    public void getObjectBytes(AmazonS3 s3, String bucketName, String keyName, String path) throws SQLException {
         DataSource dataSource = null;
+     try {
+        S3Object s3Object=    s3.getObject(bucketName,keyName);
+        S3ObjectInputStream responseInputStream  =   s3Object.getObjectContent();
 
-        try {
-//            GetObjectRequest getObjectRequest = GetObjectRequest
-//                    .builder()
-//                    .key(keyName)
-//                    .bucket(bucketName)
-//                    .build();
-//            ResponseInputStream<GetObjectResponse> responseInputStream = s3.getObject(getObjectRequest);
-
-            InputStream stubInputStream =
-                    IOUtils.toInputStream("Tenant_id    Device_id  Model              Manufacturer       Device_Type        Approval_Date\n" +
-                            "Manipal_01   201        GE-MRI-1000        General Electric   MRI Scanner        2022-01-20\n" +
-                            "Manipal_01   202        GE-Xray-5000       General Electric   X-ray Machine      2022-03-15\n" +
-                            "Manipal_01   203        GE-Ultrasound-300  Siemens            Ultrasound System  2022-02-15\n" +
-                            "Manipal_01   204        GE-CT-Scanner-700  Phillips           CT Scanner         2022-02-10", "UTF-8");
-                String res= new String(IOUtils.toInputStream("Tenant_id    Device_id  Model              Manufacturer       Device_Type        Approval_Date\n" +
-                        "Manipal_01   201        GE-MRI-1000        General Electric   MRI Scanner        2022-01-20\n" +
-                        "Manipal_01   202        GE-Xray-5000       General Electric   X-ray Machine      2022-03-15\n" +
-                        "Manipal_01   203        GE-Ultrasound-300  Siemens            Ultrasound System  2022-02-15\n" +
-                        "Manipal_01   204        GE-CT-Scanner-700  Phillips           CT Scanner         2022-02-10", "UTF-8").readAllBytes(),StandardCharsets.UTF_8);
-
-
-
-              String sqlInsert= tableToSqlQuery(res);
-            LOGGER.info("INSERT QUERY : "+sqlInsert);
+             String sqlInsert= tableToSqlQuery( new String(responseInputStream.readAllBytes(), StandardCharsets.UTF_8));
+             LOGGER.info("INSERT QUERY : "+sqlInsert);
              TenantDataSource tenantDataSource = context.getBean(TenantDataSource.class);
              dataSource= tenantDataSource.getDataSource(bucketName);
-//             String s="INSERT INTO devicedetail.device(tenant_id, device_id, model, manufacturer, device_type, approval_date) VALUES ('Manipal_01', 204, 'GE-CT-Scanner-700', 'Phillips', 'CT Scanner',  '2022-02-10')";
              dataSource.getConnection().createStatement().execute(sqlInsert);
-
-
-//            InputStream stream = new ByteArrayInputStream(responseInputStream.readAllBytes());
-//            System.out.println("Content :"+ new String(responseInputStream.readAllBytes(), StandardCharsets.UTF_8));
-
-
-//            ResponseBytes<GetObjectResponse> objectBytes = s3.getObjectAsBytes(objectRequest);
-//            byte[] data = objectBytes.asByteArray();
-//
-//            // Write the data to a local file.
-//            File myFile = new File(path);
-//            OutputStream os = new FileOutputStream(myFile);
-//            os.write(data);
-//            System.out.println("Successfully obtained bytes from an S3 object");
-//            os.close();
-
-        } catch (S3Exception | IOException e ) {//| SQLException e
+        } catch (S3Exception | IOException e ) {
             System.err.println(e.getMessage());
             System.exit(1);
         }
@@ -97,8 +64,6 @@ public class S3Processor {
         for(int i=1;i<sarr.length;i++){
             s.append("(");
            String[] rowData= sarr[i].split("  ");
-//           Stream.of(rowData).filter(s -> !s.isBlank())
-//                   .map(s -> s+",").collect(Collectors.toList());
             for(int j=0;j<rowData.length;j++){
                 if(!rowData[j].isEmpty()){
                     if(AppUtils.isNumeric(rowData[j]))
@@ -113,8 +78,6 @@ public class S3Processor {
             s = new StringBuilder(AppUtils.removeTrailingComma(s.toString()));
             s.append("),");
         }
-        //('Manipal_01', 204, 'GE-CT-Scanner-700', 'Phillips', 'CT Scanner',  '2022-02-10')
-//        s=AppUtils.removeTrailingComma(s.toString());
         return  sqlInsert+" "+AppUtils.removeTrailingComma(s.toString());
     }
 }

@@ -1,5 +1,10 @@
 package com.health.devicesevent.listener;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.health.devicesevent.configuration.TenantDataSource;
 import com.health.devicesevent.processor.S3Processor;
@@ -10,6 +15,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -20,6 +26,8 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
@@ -32,6 +40,12 @@ import java.util.Map;
 
 @Component("kafkaconsumer")
 public class KafkaConsumer {
+
+    @Value("${spring.cloud.aws.credentials.access-key}")
+    private String accessKey;
+
+    @Value("${spring.cloud.aws.credentials.secret-key}")
+    private String secretKey;
 
     @Autowired
     S3Processor s3Processor;
@@ -53,18 +67,27 @@ public class KafkaConsumer {
          LOGGER.info(String.format("Object created-> %s", s3ObjDetail));
          JSONObject s3Obj= s3ObjDetail.getJSONObject("s3");
          System.out.println(s3Obj);
-         String bucketName=  "Manipal_01";//s3Obj.getJSONObject("bucket").getString("name");
+         String bucketName= s3Obj.getJSONObject("bucket").getString("name");
          String keyName =  s3Obj.getJSONObject("object").getString("key");
          String region =  s3ObjDetail.getString("awsRegion");
          String path = "";
-//      String bucketName = "";
-//      String keyName = "";
-//      String path = "";
-//      Region region = Region.US_EAST_1;
-        S3Client s3 = S3Client.builder()
-                .region(Region.of(region))
+
+//        AmazonS3 s3client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).withRegion(Regions.AP_EAST_1).build();
+//        String bucketExists=String.valueOf(s3client.doesBucketExistV2("newBucketName"));
+//
+
+        BasicAWSCredentials creds = new BasicAWSCredentials(accessKey, secretKey);
+        AmazonS3 s3Client = AmazonS3ClientBuilder
+                .standard()
+                .withRegion(String.valueOf(Region.of(region)))
+                .withCredentials(new AWSStaticCredentialsProvider(creds))
                 .build();
-            s3Processor.getObjectBytes(s3, bucketName, keyName, path);
+//        S3Client s3 = S3Client.builder().
+//
+//                .region(Region.of(region))
+//                .build();
+
+            s3Processor.getObjectBytes(s3Client, bucketName, keyName, path);
 //        } catch (SQLException e) {// | JSONException e
 //            e.printStackTrace();
 //        }

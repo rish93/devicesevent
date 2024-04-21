@@ -1,16 +1,16 @@
-//[
-//  {
-//    "tenant" : "Manipal_01",
-//    "dataSourceClassName": "org.postgresql.Driver",
-//    "url": "jdbc:postgresql://localhost:5432/Device_Manipal_01_DB",
-//    "user": "postgres",
-//    "password": "root"
-//  },
-//  {
-//    "tenant": "Device_Manipal_02",
-//    "dataSourceClassName": "org.postgresql.Driver",
-//    "url": "jdbc:postgresql://localhost:5432/Device_Manipal_02_DB",
-//    "user": "postgres",
-//    "password": "root"
-//  }
-//]
+[
+  {
+    "tenant" : "Manipal_01",
+    "dataSourceClassName": "org.postgresql.Driver",
+    "url": "jdbc:postgresql://localhost:5432/Device_Manipal_01_DB",
+    "user": "postgres",
+    "password": "root"
+  },
+  {
+    "tenant": "Device_Manipal_02",
+    "dataSourceClassName": "org.postgresql.Driver",
+    "url": "jdbc:postgresql://localhost:5432/Device_Manipal_02_DB",
+    "user": "postgres",
+    "password": "root"
+  }
+]
