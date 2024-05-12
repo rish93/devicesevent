@@ -1,8 +1,14 @@
+start kafka and zookeeper
+$ zookeeper-server-start /opt/homebrew/etc/kafka/zookeeper.properties
+$ kafka-server-start /opt/homebrew/etc/kafka/server.properties
+
+kafka-topics -zookeeper localhost:2181 -topic kafka-device-topic -create
+
 //listner on terminal command
-kafka-console-consumer --bootstrap-server localhost:9092 --topic foobar --from-beginning
+kafka-console-consumer --bootstrap-server localhost:9092 --topic kafka-device-topic --from-beginning
 
 //producer on terminal command
-kafka-console-producer --broker-list localhost:9092 --topic foobar
+kafka-console-producer --broker-list localhost:9092 --topic kafka-device-topic
 
 //temrinal list all topics
 kafka-topics \
@@ -10,6 +16,8 @@ kafka-topics \
   --list
 
 kafka-topics --bootstrap-server localhost:9092 --delete --topic d
+
+bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
 
 
 /setting kafka on mac
@@ -26,3 +34,16 @@ https://www.javaguides.net/2022/06/spring-boot-apache-kafka-tutorial.html
 
 #Kafka topic configuration for offsetreset
 https://quix.io/blog/kafka-auto-offset-reset-use-cases-and-pitfalls#:~:text=The%20auto.,and%20discover%20its%20related%20challenges.
+
+
+kafka acknowlede message and commit
+https://medium.com/@putnin.v/kafka-manual-offset-commit-and-acknowledgment-153624eb762e#:~:text=It%20is%20a%20signal%20to,don't%20acknowledge%20that%20message.
+
+
+manual acknowledgement and offset commit
+https://stackoverflow.com/questions/47427948/how-to-acknowledge-current-offset-in-spring-kafka-for-manual-commit
+
+
+kafka message with a key, goes to same partition. Make sure order
+https://www.baeldung.com/java-kafka-message-key
+

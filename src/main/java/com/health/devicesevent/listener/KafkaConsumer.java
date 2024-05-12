@@ -35,7 +35,9 @@ import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.Timestamp;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Map;
 
 @Component("kafkaconsumer")
@@ -90,7 +92,7 @@ public class KafkaConsumer {
 
             FileUtils.writeStringToFile(
                     f,
-                    "\n"+message.getPayload().toString() +"\t"+topic+"\t"+new String(message.getHeaders().get("kafka_exception-message",byte[].class),StandardCharsets.UTF_8),
+                    "\n"+ Instant.now().toString() +"\t"+message.getPayload().toString() +"\t"+topic+"\t"+new String(message.getHeaders().get("kafka_exception-message",byte[].class),StandardCharsets.UTF_8),
                     StandardCharsets.UTF_8,
                     true // == append to end of file
             );
